@@ -4,7 +4,7 @@ sys.path.append('./')
 from custom_conf import *
 
 # The file contains helper functions and the mechanism to build the
-# .sphinx/requirements.txt file that is needed to set up the virtual
+# _dev/requirements.txt file that is needed to set up the virtual
 # environment.
 
 # You should not do any modifications to this file. Put your custom
@@ -113,7 +113,7 @@ if __name__ == "__main__":
     requirements = list(dict.fromkeys(requirements))
     requirements.sort()
 
-    with open(".sphinx/requirements.txt", 'w') as requirements_file:
+    with open("_dev/requirements.txt", 'w') as requirements_file:
         requirements_file.write(
             "# DO NOT MODIFY THIS FILE DIRECTLY!\n"
             "#\n"

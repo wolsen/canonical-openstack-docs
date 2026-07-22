@@ -8,7 +8,7 @@ import ast
 
 sys.path.append('./')
 from custom_conf import *
-sys.path.append('.sphinx/')
+sys.path.append('_dev/')
 from build_requirements import *
 
 # Configuration file for the Sphinx documentation builder.
@@ -102,7 +102,7 @@ exclude_patterns = [
     '_build',
     'Thumbs.db',
     '.DS_Store',
-    '.sphinx',
+    '_dev',
 ]
 exclude_patterns.extend(custom_excludes)
 
@@ -145,7 +145,7 @@ if '-b' in sys.argv:
 
 # Setting templates_path for epub makes the build fail
 if builder == 'dirhtml' or builder == 'html':
-    templates_path = ['.sphinx/_templates']
+    templates_path = ['_dev/_templates']
     notfound_template = '404.html'
 
 # Theme configuration
@@ -162,7 +162,7 @@ if html_title == '':
 ### Additional files
 ############################################################
 
-html_static_path = ['.sphinx/_static']
+html_static_path = ['_dev/_static']
 
 html_css_files = [
     'custom.css',
@@ -220,22 +220,22 @@ html_context['get_contribs'] = get_contributors_for_file
 ############################################################
 
 latex_additional_files = [
-    "./.sphinx/fonts/Ubuntu-B.ttf",
-    "./.sphinx/fonts/Ubuntu-R.ttf",
-    "./.sphinx/fonts/Ubuntu-RI.ttf",
-    "./.sphinx/fonts/UbuntuMono-R.ttf",
-    "./.sphinx/fonts/UbuntuMono-RI.ttf",
-    "./.sphinx/fonts/UbuntuMono-B.ttf",
-    "./.sphinx/images/Canonical-logo-4x.png",
-    "./.sphinx/images/front-page-light.pdf",
-    "./.sphinx/images/normal-page-footer.pdf",
+    "./_dev/fonts/Ubuntu-B.ttf",
+    "./_dev/fonts/Ubuntu-R.ttf",
+    "./_dev/fonts/Ubuntu-RI.ttf",
+    "./_dev/fonts/UbuntuMono-R.ttf",
+    "./_dev/fonts/UbuntuMono-RI.ttf",
+    "./_dev/fonts/UbuntuMono-B.ttf",
+    "./_dev/images/Canonical-logo-4x.png",
+    "./_dev/images/front-page-light.pdf",
+    "./_dev/images/normal-page-footer.pdf",
 ]
 
 latex_engine = 'xelatex'
 latex_show_pagerefs = True
 latex_show_urls = 'footnote'
 
-with open(".sphinx/latex_elements_template.txt", "rt") as file:
+with open("_dev/latex_elements_template.txt", "rt") as file:
     latex_config = file.read()
 
 latex_elements = ast.literal_eval(latex_config.replace("$PROJECT", project))

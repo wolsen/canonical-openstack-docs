@@ -13,12 +13,12 @@ name: Check and document build requirements for Sphinx venv
 on:
   push:
     paths:
-      - 'conf.py'
-      - 'custom_conf.py'
+      - 'docs/conf.py'
+      - 'docs/custom_conf.py'
   pull_request:
     paths:
-      - 'conf.py'
-      - 'custom_conf.py'
+      - 'docs/conf.py'
+      - 'docs/custom_conf.py'
   workflow_dispatch:
 
 
@@ -50,6 +50,7 @@ jobs:
       - name: Build Sphinx venv
         run: |
           set -ex
+          cd docs
           make -f Makefile.sp \
             sp-install \
             PIPOPTS="--no-binary :all:" \
