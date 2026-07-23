@@ -1,241 +1,277 @@
-import sys
+import datetime
 import os
-import requests
-from urllib.parse import urlparse
-from git import Repo, InvalidGitRepositoryError
-import time
-import ast
+import textwrap
 
-sys.path.append('./')
-from custom_conf import *
-sys.path.append('_dev/')
-from build_requirements import *
-
-# Configuration file for the Sphinx documentation builder.
-# You should not do any modifications to this file. Put your custom
-# configuration into the custom_conf.py file.
-# If you need to change this file, contribute the changes upstream.
+# Configuration for the Sphinx documentation builder.
+# All configuration specific to your project should be done in this file.
 #
-# For the full list of built-in configuration values, see the documentation:
+# If you're new to Sphinx and don't want any advanced or custom features,
+# just go through the items marked 'TODO'.
+#
+# A complete list of built-in Sphinx configuration values:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
+#
+# The Sphinx Stack uses the Canonical Sphinx theme to keep all documentation consistent
+# and on brand:
+# https://github.com/canonical/canonical-sphinx
 
-############################################################
-### Extensions
-############################################################
+#######################
+# Project information #
+#######################
 
-extensions = [
-    'sphinx_design',
-    'sphinx_copybutton',
-    'sphinxcontrib.jquery',
-    "sphinx_tabs.tabs",
-    'canonical.related-links',
-    'canonical.terminal-output',
-]
+# Project name
+project = "Canonical OpenStack"
 
-# Only add redirects extension if any redirects are specified.
-if AreRedirectsDefined():
-    extensions.append('sphinx_reredirects')
+# Author name; used in the default copyright statement in the page footer
+author = "Canonical Ltd."
 
-# Only add myst extensions if any configuration is present.
-if IsMyStParserUsed():
-    extensions.append('myst_parser')
+# The year in the copyright statement
+copyright = f"{datetime.date.today().year}"
 
-    # Additional MyST syntax
-    myst_enable_extensions = [
-        'substitution',
-        'deflist',
-        'linkify'
-    ]
-    myst_enable_extensions.extend(custom_myst_extensions)
+# Sidebar documentation title
+# To disable the title, set it to an empty string.
+html_title = project + " documentation"
 
-# Only add Open Graph extension if any configuration is present.
-if IsOpenGraphConfigured():
-    extensions.append('sphinxext.opengraph')
+# Documentation website URL
+ogp_site_url = os.environ.get("READTHEDOCS_CANONICAL_URL", "/")
 
-extensions.extend(custom_extensions)
-extensions = DeduplicateExtensions(extensions)
+# Preview name of the documentation website
+ogp_site_name = project
 
-### Configuration for extensions
+# Preview image URL
+# TODO: To customise the preview image, update the next line.
+ogp_image = "https://assets.ubuntu.com/v1/cc828679-docs_illustration.svg"
 
-# Used for related links
-if not 'discourse_prefix' in html_context and 'discourse' in html_context:
-    html_context['discourse_prefix'] = html_context['discourse'] + '/t/'
+# Product favicon; shown in bookmarks, browser tabs, etc.
+# TODO: To customise the favicon, uncomment and update the next line.
+# html_favicon = "_static/favicon.png"
 
-# The URL prefix for the notfound extension depends on whether the documentation uses versions.
-# For documentation on documentation.ubuntu.com, we also must add the slug.
-url_version = ''
-url_lang = ''
-
-# Determine if the URL uses versions and language
-if 'READTHEDOCS_CANONICAL_URL' in os.environ and os.environ['READTHEDOCS_CANONICAL_URL']:
-    url_parts = os.environ['READTHEDOCS_CANONICAL_URL'].split('/')
-
-    if len(url_parts) >= 2 and 'READTHEDOCS_VERSION' in os.environ and os.environ['READTHEDOCS_VERSION'] == url_parts[-2]:
-        url_version = url_parts[-2] + '/'
-
-    if len(url_parts) >= 3 and 'READTHEDOCS_LANGUAGE' in os.environ and os.environ['READTHEDOCS_LANGUAGE'] == url_parts[-3]:
-        url_lang = url_parts[-3] + '/'
-
-# Set notfound_urls_prefix to the slug (if defined) and the version/language affix
-if slug:
-    notfound_urls_prefix = '/' + slug  + '/' + url_lang + url_version
-elif len(url_lang + url_version) > 0:
-    notfound_urls_prefix = '/' + url_lang + url_version
-else:
-    notfound_urls_prefix = ''
-
-notfound_context = {
-    'title': 'Page not found',
-    'body': '<p><strong>Sorry, but the documentation page that you are looking for was not found.</strong></p>\n\n<p>Documentation changes over time, and pages are moved around. We try to redirect you to the updated content where possible, but unfortunately, that didn\'t work this time (maybe because the content you were looking for does not exist in this version of the documentation).</p>\n<p>You can try to use the navigation to locate the content you\'re looking for, or search for a similar page.</p>\n',
+# Dictionary of values to pass into the Sphinx context for all pages:
+# https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-html_context
+html_context = {
+    # Product page URL; can be different from product docs URL
+    "product_page": "canonical.com/openstack",
+    # Product tag image; the orange part of your logo, shown in the page header
+    # TODO: To add a tag image, uncomment and update as needed.
+    # 'product_tag': '_static/tag.png',
+    # Your Discourse instance URL
+    # TODO: Change to your Discourse instance URL or leave empty.
+    "discourse": "https://discourse.ubuntu.com",
+    # Your Mattermost channel URL
+    "mattermost": "",
+    # Your Matrix channel URL
+    "matrix": "https://matrix.to/#/#openstack-sunbeam:ubuntu.com",
+    # Your documentation GitHub repository URL If set, links for viewing the
+    # documentation source files and creating GitHub issues are added at the bottom of
+    # each page.
+    "github_url": "https://github.com/canonical/canonical-openstack-docs",
+    # Docs branch in the repo; used in links for viewing the source files
+    "repo_default_branch": "main",
+    # Docs location in the repo; used in links for viewing the source files
+    "repo_folder": "/docs/",
+    # Valid options: none, prev, next, both
+    # "sequential_nav": "",
+    "display_contributors": False,
+    # Required for feedback button
+    "github_issues": "enabled",
+    # Passes the top-level 'author' value to the theme
+    "author": author,
+    # Documentation license information
+    "license": {
+        "name": "Apache-2.0",
+        "url": "https://github.com/canonical/snap-openstack/blob/main/LICENSE",
+    },
 }
 
-# Default image for OGP (to prevent font errors, see
-# https://github.com/canonical/sphinx-docs-starter-pack/pull/54 )
-if not 'ogp_image' in locals():
-    ogp_image = 'https://assets.ubuntu.com/v1/253da317-image-document-ubuntudocs.svg'
+# TODO: To enable the edit button on pages, uncomment and change the link to a
+# public repository on GitHub or Launchpad. Any of the following link domains
+# are accepted:
+# - https://github.com/example-org/example"
+# - https://launchpad.net/example
+# - https://git.launchpad.net/example
+#
+# html_theme_options = {
+# 'source_edit_link': 'https://github.com/canonical/sphinx-stack',
+# }
 
-############################################################
-### General configuration
-############################################################
+# Project slug
+# TODO: If your documentation is hosted on https://documentation.ubuntu.com/,
+#       uncomment and set to the RTD slug.
+# slug = ''
 
-exclude_patterns = [
-    '_build',
-    'Thumbs.db',
-    '.DS_Store',
-    '_dev',
+#######################
+# Sitemap configuration: https://sphinx-sitemap.readthedocs.io/
+#######################
+
+# Use RTD canonical URL to ensure duplicate pages have a specific canonical URL
+html_baseurl = os.environ.get("READTHEDOCS_CANONICAL_URL", "/")
+
+# sphinx-sitemap uses html_baseurl to generate the full URL for each page:
+sitemap_url_scheme = "{link}"
+
+# Include `lastmod` dates in the sitemap:
+sitemap_show_lastmod = True
+
+# TODO: Exclude pages that aren't user-facing from the sitemap (e.g., module pages
+# generated by autodoc).
+# Pages excluded from the sitemap:
+sitemap_excludes = [
+    "404/",
+    "genindex/",
+    "search/",
 ]
-exclude_patterns.extend(custom_excludes)
 
-rst_epilog = '''
-.. include:: /reuse/links.txt
-'''
-if 'custom_rst_epilog' in locals():
-    rst_epilog = custom_rst_epilog
+################################
+# Template and asset locations #
+################################
 
-source_suffix = {
-    '.rst': 'restructuredtext',
-    '.md': 'markdown',
-}
+# html_static_path = ["_static"]
+# templates_path = ["_templates"]
 
-if not 'conf_py_path' in html_context and 'github_folder' in html_context:
-    html_context['conf_py_path'] = html_context['github_folder']
+#############
+# Redirects #
+#############
 
-# For ignoring specific links
+# Add redirects to the 'redirects.txt' file
+# https://sphinxext-rediraffe.readthedocs.io/en/latest/
+
+# To set up redirects in the Read the Docs project dashboard:
+# https://docs.readthedocs.io/en/stable/guides/redirects.html
+
+rediraffe_redirects = "redirects.txt"
+
+# Strips '/index.html' from destination URLs when building with 'dirhtml'
+rediraffe_dir_only = True
+
+
+############################
+# sphinx-llm configuration #
+############################
+
+# This description is included in llms.txt to provide some initial context for your
+# product docs.
+# TODO: Add a description in the form "This is the documentation for <product name>,
+# <first sentence of home page>".
+llms_txt_description = textwrap.dedent(
+    """\
+    This is the documentation for Canonical OpenStack, an enterprise-grade cloud
+    platform that delivers distilled upstream OpenStack excellence in the form of
+    a human-friendly product.
+    """
+)
+
+# The base URL for references built by sphinx-markdown-builder.
+if os.environ.get("READTHEDOCS"):
+    markdown_http_base = html_baseurl
+
+###########################
+# Link checker exceptions #
+###########################
+
+# A regex list of URLs that are ignored by 'make linkcheck'
+linkcheck_ignore = [
+    "http://127.0.0.1:8000",
+    "https://github.com",
+    r"https://matrix\.to/.*",
+    "https://example.com",
+    # SourceForge domains often block linkcheck
+    r"https://.*\.sourceforge\.(net|io)/.*",
+    # Exclude RFC1918 URLs as they are used for examples in the documentation
+    r'^http[s]://10\.',
+    r'^http://172\.(1[6-9]|2[0-9]|3[0-1])\.',
+    r'^http://192\.168\.',
+]
+
+# A regex list of URLs where anchors are ignored by 'make linkcheck'
 linkcheck_anchors_ignore_for_url = [
-    r'https://github\.com/.*'
-]
-linkcheck_anchors_ignore_for_url.extend(custom_linkcheck_anchors_ignore_for_url)
-
-# Tags cannot be added directly in custom_conf.py, so add them here
-for tag in custom_tags:
-    tags.add(tag)
-
-# html_context['get_contribs'] is a function and cannot be
-# cached (see https://github.com/sphinx-doc/sphinx/issues/12300)
-suppress_warnings = ["config.cache"]
-
-############################################################
-### Styling
-############################################################
-
-# Find the current builder
-builder = 'dirhtml'
-if '-b' in sys.argv:
-    builder = sys.argv[sys.argv.index('-b')+1]
-
-# Setting templates_path for epub makes the build fail
-if builder == 'dirhtml' or builder == 'html':
-    templates_path = ['_dev/_templates']
-    notfound_template = '404.html'
-
-# Theme configuration
-html_theme = 'furo'
-html_last_updated_fmt = ''
-html_permalinks_icon = '¶'
-
-if html_title == '':
-    html_theme_options = {
-        'sidebar_hide_name': True
-        }
-
-############################################################
-### Additional files
-############################################################
-
-html_static_path = ['_dev/_static']
-
-html_css_files = [
-    'custom.css',
-    'header.css',
-    'github_issue_links.css',
-    'furo_colors.css',
-    'footer.css'
-]
-html_css_files.extend(custom_html_css_files)
-
-html_js_files = ['header-nav.js', 'footer.js']
-if 'github_issues' in html_context and html_context['github_issues'] and not disable_feedback_button:
-    html_js_files.append('github_issue_links.js')
-html_js_files.extend(custom_html_js_files)
-
-#############################################################
-# Display the contributors
-
-def get_contributors_for_file(github_url, github_folder, pagename, page_source_suffix, display_contributors_since=None):
-    filename = f"{pagename}{page_source_suffix}"
-    paths=html_context['github_folder'][1:] + filename
-
-    try:
-        repo = Repo(".")
-    except InvalidGitRepositoryError:
-        cwd = os.getcwd()
-        ghfolder = html_context['github_folder'][:-1]
-        if ghfolder and cwd.endswith(ghfolder):
-            repo = Repo(cwd.rpartition(ghfolder)[0])
-        else:
-            print("The local Git repository could not be found.")
-            return
-
-    since = display_contributors_since if display_contributors_since and display_contributors_since.strip() else None
-
-    commits = repo.iter_commits(paths=paths, since=since)
-
-    contributors_dict = {}
-    for commit in commits:
-        contributor = commit.author.name
-        if contributor not in contributors_dict or commit.committed_date > contributors_dict[contributor]['date']:
-            contributors_dict[contributor] = {
-                'date': commit.committed_date,
-                'sha': commit.hexsha
-            }
-    # The github_page contains the link to the contributor's latest commit.
-    contributors_list = [{'name': name, 'github_page': f"{github_url}/commit/{data['sha']}"} for name, data in contributors_dict.items()]
-    sorted_contributors_list = sorted(contributors_list, key=lambda x: x['name'])
-    return sorted_contributors_list
-
-html_context['get_contribs'] = get_contributors_for_file
-
-############################################################
-### PDF configuration
-############################################################
-
-latex_additional_files = [
-    "./_dev/fonts/Ubuntu-B.ttf",
-    "./_dev/fonts/Ubuntu-R.ttf",
-    "./_dev/fonts/Ubuntu-RI.ttf",
-    "./_dev/fonts/UbuntuMono-R.ttf",
-    "./_dev/fonts/UbuntuMono-RI.ttf",
-    "./_dev/fonts/UbuntuMono-B.ttf",
-    "./_dev/images/Canonical-logo-4x.png",
-    "./_dev/images/front-page-light.pdf",
-    "./_dev/images/normal-page-footer.pdf",
+    r"https://github\.com/.*",
+    '^https://ubuntu.com/server/docs/.*$',
+    '^https://juju.is/docs/juju/.*$',
 ]
 
-latex_engine = 'xelatex'
-latex_show_pagerefs = True
-latex_show_urls = 'footnote'
+# How long the link checker will wait for a response for each request
+# TODO: Decrease to improve run time or increase if links frequently time out.
+# linkcheck_timeout = 30
 
-with open("_dev/latex_elements_template.txt", "rt") as file:
-    latex_config = file.read()
+# Give linkcheck multiple tries on failure
+linkcheck_retries = 3
 
-latex_elements = ast.literal_eval(latex_config.replace("$PROJECT", project))
+########################
+# Configuration extras #
+########################
+
+# Custom MyST syntax extensions; see
+# https://myst-parser.readthedocs.io/en/latest/syntax/optional.html
+# NOTE: By default, the following MyST extensions are enabled:
+#   - substitution
+#   - deflist
+#   - linkify
+# myst_enable_extensions = set()
+
+# Custom Sphinx extensions; see
+# https://www.sphinx-doc.org/en/master/usage/extensions/index.html
+extensions = [
+    "canonical_sphinx",
+    "notfound.extension",
+    "sphinx_design",
+    "sphinx_rerediraffe",
+    "sphinx_reredirects",
+    "sphinx_tabs.tabs",
+    "sphinxcontrib.jquery",
+    "sphinxext.opengraph",
+    "sphinx_config_options",
+    "sphinx_contributor_listing",
+    "sphinx_filtered_toctree",
+    "sphinx_llm.txt",
+    "sphinx_related_links",
+    "sphinx_roles",
+    "sphinx_terminal",
+    "sphinx_ubuntu_images",
+    "sphinx_youtube_links",
+    "sphinxcontrib.cairosvgconverter",
+    "sphinx_last_updated_by_git",
+    "sphinx.ext.intersphinx",
+    "sphinx_sitemap",
+]
+
+# Excludes files or directories from processing
+exclude_patterns = [
+    "doc-cheat-sheet*",
+    ".venv*",
+    "_dev",
+]
+
+# Adds custom CSS files, located remotely or in 'html_static_path'.
+# html_css_files = [
+#     "https://assets.ubuntu.com/v1/d86746ef-cookie_banner.css",
+# ]
+
+# Adds custom JavaScript files, located remotely or in 'html_static_path'.
+# html_js_files = [
+#     "https://assets.ubuntu.com/v1/287a5e8f-bundle.js",
+# ]
+
+# Appends extra markup to the end of every document written in reST
+rst_epilog = """
+.. include:: /reuse/links.txt
+"""
+
+# Specifies a reST snippet to be prepended to each .rst file
+# This defines a :center: role that centers table cell content.
+# This defines a :h2: role that styles content for use with PDF generation.
+rst_prolog = """
+.. role:: center
+   :class: align-center
+.. role:: h2
+    :class: hclass2
+.. role:: woke-ignore
+    :class: woke-ignore
+.. role:: vale-ignore
+    :class: vale-ignore
+"""
+
+# Configuration for Intersphinx projects
+#
+# intersphinx_mapping = {
+#     "snap": ("https://snapcraft.io/docs/", None),
+# }

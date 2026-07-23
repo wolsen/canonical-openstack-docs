@@ -77,7 +77,8 @@ Sample output:
    :user: ubuntu
    :host: sunbeam01
    :dir: ~
-   :input: openstack coe cluster template
+
+   openstack coe cluster template
       create ck8s-cluster-template-ovn \
       --image ubuntu \
       --external-network external-network \
@@ -297,7 +298,8 @@ Existing cluster can be upgraded to enable keystone auth by running the followin
    :user: ubuntu
    :host: sunbeam01
    :dir: ~
-   :input: openstack coe cluster upgrade CLUSTER_UUID NEW_CLUSTER_TEMPLATE_UUID
+
+   openstack coe cluster upgrade CLUSTER_UUID NEW_CLUSTER_TEMPLATE_UUID
 
    Request to upgrade cluster fc5724ae-aef8-4c89-aef8-78bc41f54325 has been accepted.
 

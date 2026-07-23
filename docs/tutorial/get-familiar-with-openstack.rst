@@ -443,11 +443,9 @@ Once this command finishes, you should be able to see the following message on t
 
    Please check minimum hardware requirements for support:
 
-       https://microstack.run/docs/enterprise-reqs
+       https://canonical-openstack.readthedocs-hosted.com/en/latest/reference/enterprise-requirements
 
    Ubuntu Pro enabled.
-
-.. TODO:: Update the link to the enterprise requirements page
 
 Depending on the subscription type, your machine is now eligible for certain Ubuntu Pro services:
 
