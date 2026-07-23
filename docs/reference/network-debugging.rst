@@ -19,15 +19,8 @@ Contents:
 -  `Resolving OpenFlow port
    numbers <#heading--resolving-openflow-port-numbers>`__
 
-.. raw:: html
-
-   <h2 id="heading--accessing-ovn-databases">
-
 Accessing OVN databases
-
-.. raw:: html
-
-   </h2>
+-----------------------
 
 There are four containers in each :code:`ovn-chassis` pod:
 
@@ -66,15 +59,9 @@ Set up aliases:
    bash
    alias ovn-sbctl='ovn-sbctl --db=ssl:127.0.0.1:6642 -c /etc/ovn/cert_host -p /etc/ovn/key_host -C /etc/ovn/ovn-central.crt'
 
-.. raw:: html
-
-   <h2 id="heading--querying-ovn-databases">
 
 Querying OVN databases
-
-.. raw:: html
-
-   </h2>
+----------------------
 
 Assuming that all the defaults for a single-node install were used and
 ``sunbeam launch`` was used to create a guest, then there will be a
@@ -233,15 +220,8 @@ The flows can also be listed:
    ovn-sbctl lflow-list
    ...
 
-.. raw:: html
-
-   <h2 id="heading--capturing-and-tracing-an-ingress-packet">
-
 Capturing and tracing an ingress packet
-
-.. raw:: html
-
-   </h2>
+---------------------------------------
 
 The example below captures and then traces an ICMP echo request packet
 destined for a guest. The first step is to capture an echo request
@@ -442,15 +422,8 @@ This time the trace command ends with:
    44. ip,reg0=0x200/0x200,reg15=0x3,metadata=0x2, priority 2001, cookie 0x5eeee244
        drop
 
-.. raw:: html
-
-   <h2 id="heading--resolving-openflow-port-numbers">
-
 Resolving OpenFlow port numbers
-
-.. raw:: html
-
-   </h2>
+-------------------------------
 
 When looking at OpenFlow rules or tracing a packet, the ports are given
 numbers. These are the OpenFlow port numbers. For example, to find what

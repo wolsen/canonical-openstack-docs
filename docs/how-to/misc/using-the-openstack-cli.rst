@@ -32,6 +32,3 @@ command. Here, the file ``admin-openrc`` is chosen as init file:
 
    sunbeam openrc > admin-openrc
 
-.. raw:: html
-
-   <!-- LINKS -->

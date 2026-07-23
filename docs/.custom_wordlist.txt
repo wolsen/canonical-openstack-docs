@@ -6,6 +6,8 @@ Ansible
 ACL
 ACLs
 APIs
+AZ
+AZs
 Aodh
 Autoscaling
 Barbican
@@ -31,6 +33,7 @@ CTRL
 DHCP
 DNS
 DPDK
+Enablement
 Entra
 Failover
 Flavors
@@ -111,6 +114,7 @@ RTO
 SAML
 SEV
 SHUTOFF
+SLAs
 SSD
 SimpleStreams
 StatefulSet
@@ -121,6 +125,7 @@ TPM
 Traefik
 ULA
 Uncordon
+Ussuri
 VF
 VFs
 VMs
@@ -128,18 +133,20 @@ VMDK
 VMware
 VXLAN
 VLAN
+VLANs
 amd
 apache
 api
 args
 auth
 aws
-balancers
-balancer's
 backend
 backends
 backport
 backported
+balancers
+balancer's
+baremetal
 br
 ceph
 cirros
@@ -160,6 +167,7 @@ distro
 dom
 dpdk
 dqlite
+enablement
 eno
 entityID
 entra
@@ -219,6 +227,7 @@ mysubnet
 myuser
 nameserver
 nameservers
+netconf
 noout
 ok
 okta
@@ -257,6 +266,7 @@ scalability
 schedulable
 sdb
 sev
+sharding
 snapd
 subnet
 subnets
