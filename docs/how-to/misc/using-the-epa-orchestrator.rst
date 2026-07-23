@@ -13,6 +13,6 @@ To use the EPA orchestrator, the host system must be preconfigured with the foll
 
 For MAAS deployments, configure these via the MAAS UI/CLI for each node.
 For detailed instructions on setting kernel boot parameters via the CLI, refer to the
-`MAAS documentation on machine customization <https://canonical.com/maas/docs/about-machine-customization#p-17465-kernel-boot-options>`_.
+`MAAS documentation on machine customization <https://canonical.com/maas/docs/3.7/explanation/machine-customization/#kernel-boot-options>`_.
 
 For **single-node deployments**, configure these parameters manually on the node and reboot the machine.

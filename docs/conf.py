@@ -170,16 +170,19 @@ if os.environ.get("READTHEDOCS"):
 
 # A regex list of URLs that are ignored by 'make linkcheck'
 linkcheck_ignore = [
-    "http://127.0.0.1:8000",
     "https://github.com",
     r"https://matrix\.to/.*",
     "https://example.com",
     # SourceForge domains often block linkcheck
     r"https://.*\.sourceforge\.(net|io)/.*",
+    # DMTF appears to block linkchecks
+    "https://www.dmtf.org/standards/cadf",
     # Exclude RFC1918 URLs as they are used for examples in the documentation
-    r'^http[s]://10\.',
-    r'^http://172\.(1[6-9]|2[0-9]|3[0-1])\.',
-    r'^http://192\.168\.',
+    r'^https?://127\.',
+    r'^https?://192\.',
+    r'^https?://10\.',
+    r'^https?://172\.(1[6-9]|2[0-9]|3[0-1])\.',
+    r'^https?://192\.168\.',
 ]
 
 # A regex list of URLs where anchors are ignored by 'make linkcheck'
@@ -187,6 +190,7 @@ linkcheck_anchors_ignore_for_url = [
     r"https://github\.com/.*",
     '^https://ubuntu.com/server/docs/.*$',
     '^https://juju.is/docs/juju/.*$',
+    '^https://canonical.com/openstack.*$',
 ]
 
 # How long the link checker will wait for a response for each request
