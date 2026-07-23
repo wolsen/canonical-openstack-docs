@@ -145,7 +145,7 @@ Example:
     Add network adapter to PCI whitelist? Intel Corporation Ethernet 10G 2P X520 Adapter (enp130s0f1) [y/n] (n):
 
 All the VFs that belong to the specified SR-IOV PFs will be added to the
-`Nova PCI whitelist`_, in addition to the devices that may have been specified
+`Nova PCI device list`_, in addition to the devices that may have been specified
 in the :ref:`manifest file<sriov_manifest>`.
 
 The ``openstack-hypervisor`` snap determines if the specified adapters support
@@ -185,7 +185,7 @@ following command:
 Manifest configuration
 ----------------------
 
-Arbitrary PCI devices may be whitelisted through the Canonical Openstack manifest.
+Arbitrary PCI devices may be specified through the Canonical Openstack manifest.
 Apart from SR-IOV network adapters, this can also include vGPUs or FPGAs.
 
 Example:
@@ -213,7 +213,7 @@ Example:
 The device spec filters are highly flexible and can contain PCI address wildcards
 or PCI vendor/product IDs. See the `Nova device spec reference`_ for more details.
 
-The device whitelist will be applied to all the compute nodes. If needed, use
+The PCI device specs will be applied to all the compute nodes. If needed, use
 the exclusion list to define per-node lists of devices that should not be
 exposed to Openstack instances.
 
@@ -365,7 +365,7 @@ manually to avoid subsequent port binding failures.
 .. Links
 
 .. _representor functions: https://docs.kernel.org/networking/representors.html
-.. _Nova PCI whitelist: https://docs.openstack.org/nova/latest/admin/pci-passthrough.html
+.. _Nova PCI device list: https://docs.openstack.org/nova/latest/admin/pci-passthrough.html
 .. _Neutron SR-IOV agent: https://docs.openstack.org/neutron/latest/admin/config-sriov.html#enable-neutron-sriov-nic-agent-compute
 .. _Nova device spec reference: https://docs.openstack.org/nova/latest/configuration/config.html#pci.device_spec
 .. _PCI device aliases: https://docs.openstack.org/nova/latest/configuration/config.html#pci.alias

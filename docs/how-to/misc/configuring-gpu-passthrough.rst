@@ -26,21 +26,21 @@ Manual mode
 
 Canonical Openstack will determine if there are any GPU devices. `PCI device
 classes`_ of type Display Controller (0x03) and Processing Accelerators (0x1200)
-are filtered as GPU devices. The devices are automatically added to `Nova PCI 
-whitelist`_ and no user intervention is required.
+are filtered as GPU devices. The devices are automatically added to
+`Nova PCI passthrough list`_ and no user intervention is required.
 
 Maas mode
 ---------
 
 Maas mode works similar to Manual mode and the detected GPU devices are added
-to `Nova PCI whitelist`_ with no user intervention.
+to `Nova PCI passthrough list`_ with no user intervention.
 
 Ensure that MAAS is configured to apply the necessary kernel parameters.
 
 Manifest configuration
 ----------------------
 
-Arbitrary PCI devices may be whitelisted through the Canonical Openstack manifest.
+Arbitrary PCI devices may be allowed through the Canonical Openstack manifest.
 
 Example:
 
@@ -66,7 +66,7 @@ Example:
 The device spec filters are highly flexible and can contain PCI address wildcards
 or PCI vendor/product IDs. See the `Nova device spec reference`_ for more details.
 
-The device whitelist will be applied to all the compute nodes. If needed, use
+The device list will be applied to all the compute nodes. If needed, use
 the exclusion list to define per-node lists of devices that should not be
 exposed to Openstack instances.
 
@@ -119,7 +119,7 @@ Above example shows the passthrough device Nvidia 3D controller in the guest.
 
 .. Links
 
-.. _Nova PCI whitelist: https://docs.openstack.org/nova/latest/admin/pci-passthrough.html
+.. _Nova PCI passthrough list: https://docs.openstack.org/nova/latest/admin/pci-passthrough.html
 .. _Nova device spec reference: https://docs.openstack.org/nova/latest/configuration/config.html#pci.device_spec
 .. _PCI device aliases: https://docs.openstack.org/nova/latest/configuration/config.html#pci.alias
 .. _PCI device classes: https://admin.pci-ids.ucw.cz/read/PD/

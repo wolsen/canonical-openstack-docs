@@ -5,3 +5,6 @@ doc-cheat-sheet*
 
 # the baremetal-nodes document contains links containing blocked words.
 explanation/baremetal-nodes.rst
+
+# The configuring sriov pages reference command options we cannot ignore
+how-to/misc/configuring-sriov.rst
